@@ -18,8 +18,8 @@ class myDataset(Dataset):
 
         self.image_files = pd.read_csv(imagefile_csv, header=None).squeeze().tolist()
 
-        #For ROSE imgs extension is .png not .tif
-        self.image_files = [file.replace('.tif', '.png') for file in self.image_files]
+        # #For ROSE imgs extension is .png not .tif
+        # self.image_files = [file.replace('.tif', '.png') for file in self.image_files]
 
         if data_mode=='train':
             self.image_files = self.image_files[:27]
