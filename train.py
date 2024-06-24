@@ -18,7 +18,7 @@ from PIL import Image
 import time
 import torchsummary
 from torchvision.utils import save_image, make_grid
-from DNN_printer import DNN_printer
+# from DNN_printer import DNN_printer
 from model.OCT2Former import OCT2Former
 import sys
 

@@ -8,7 +8,7 @@ import csv
 import os
 import random
 from PIL import Image
-import SimpleITK as sitk
+# import SimpleITK as sitk
 from sklearn import metrics
 import cv2
 
