@@ -32,7 +32,7 @@ def main(args, num_fold=0):
     #         num_heads=[2, 4, 4, 8, 16], mlp_ratios=[4, 4, 4, 4, 4], 
     #         depths=args.depths, aux=args.aux, spec_inter=args.spec_interpolation)
 
-    model = CSNet(channels=2, classes=args.n_class)
+    model = CSNet(channels=args.in_channel, classes=args.n_class)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
