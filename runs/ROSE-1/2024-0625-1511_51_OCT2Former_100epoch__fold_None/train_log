@@ -1,0 +1,92 @@
+args:    Namespace(dataset='ROSE', mode='train_test', k_fold=None, start_fold=0, end_fold=1, dataset_file_list='utils/ROSE-1.csv', data_root='D:\\\\Internship\\\\ROSE_Dataset\\\\data\\\\ROSE-1\\\\SVC\\\\train\\\\img', data_root_aux='', target_root='D:\\\\Internship\\\\ROSE_Dataset\\\\data\\\\ROSE-1\\\\SVC\\\\train\\\\gt', test_path='', crop_size=(304, 304), depths=[1, 2, 3], patch_size=[2, 2, 2], vit_dims=[64, 128, 256, 512], token_dim=[128, 128, 128], run_dir='ROSE-1', val_step=1, in_channel=1, n_class=2, network='OCT2Former', note='', batch_size=2, class_weight=[0.5, 0.5], num_epochs=100, num_workers=4, aux=False, aux_weight=0.4, spec_interpolation=False, dice_weight=1, lr=0.0005, momentum=0.9, weight_decay=0.0001, cuda_id='0', img_aug=True, tt_aug=True, test_run_file='', label_names=[], plot=False)
+
+aux:    False
+
+aux_weight:    0.4
+
+batch_size:    2
+
+checkpoint_dir:    ['./runs/ROSE-1\\2024-0625-1511_51_OCT2Former_100epoch__fold_None\\checkpoints']
+
+class_weight:    [0.5, 0.5]
+
+crop_size:    (304, 304)
+
+cuda_id:    0
+
+data_root:    D:\\Internship\\ROSE_Dataset\\data\\ROSE-1\\SVC\\train\\img
+
+data_root_aux:    
+
+dataset:    ROSE
+
+dataset_file_list:    utils/ROSE-1.csv
+
+depths:    [1, 2, 3]
+
+dice_weight:    1
+
+dir:    ./runs/ROSE-1\2024-0625-1511_51_OCT2Former_100epoch__fold_None
+
+end_fold:    1
+
+img_aug:    True
+
+in_channel:    1
+
+k_fold:    None
+
+label_names:    []
+
+log_dir:    ['./runs/ROSE-1\\2024-0625-1511_51_OCT2Former_100epoch__fold_None\\log']
+
+logger:    <bound method basic_setting.logger of <settings_args.basic_setting object at 0x0000026E0D27A550>>
+
+lr:    0.0005
+
+mode:    train_test
+
+momentum:    0.9
+
+n_class:    2
+
+network:    OCT2Former
+
+note:    
+
+num_epochs:    100
+
+num_workers:    4
+
+params:    {'dataset': 'ROSE', 'mode': 'train_test', 'k_fold': None, 'start_fold': 0, 'end_fold': 1, 'dataset_file_list': 'utils/ROSE-1.csv', 'data_root': 'D:\\\\Internship\\\\ROSE_Dataset\\\\data\\\\ROSE-1\\\\SVC\\\\train\\\\img', 'data_root_aux': '', 'target_root': 'D:\\\\Internship\\\\ROSE_Dataset\\\\data\\\\ROSE-1\\\\SVC\\\\train\\\\gt', 'test_path': '', 'crop_size': (304, 304), 'depths': [1, 2, 3], 'patch_size': [2, 2, 2], 'vit_dims': [64, 128, 256, 512], 'token_dim': [128, 128, 128], 'run_dir': 'ROSE-1', 'val_step': 1, 'in_channel': 1, 'n_class': 2, 'network': 'OCT2Former', 'note': '', 'batch_size': 2, 'class_weight': [0.5, 0.5], 'num_epochs': 100, 'num_workers': 4, 'aux': False, 'aux_weight': 0.4, 'spec_interpolation': False, 'dice_weight': 1, 'lr': 0.0005, 'momentum': 0.9, 'weight_decay': 0.0001, 'cuda_id': '0', 'img_aug': True, 'tt_aug': True, 'test_run_file': '', 'label_names': [], 'plot': False}
+
+parser:    ArgumentParser(prog='train.py', usage=None, description=None, formatter_class=<class 'argparse.HelpFormatter'>, conflict_handler='error', add_help=True)
+
+patch_size:    [2, 2, 2]
+
+plot:    False
+
+run_dir:    ./runs/ROSE-1
+
+spec_interpolation:    False
+
+start_fold:    0
+
+target_root:    D:\\Internship\\ROSE_Dataset\\data\\ROSE-1\\SVC\\train\\gt
+
+test_path:    
+
+test_run_file:    
+
+token_dim:    [128, 128, 128]
+
+tt_aug:    True
+
+val_result_file:    ./runs/ROSE-1\2024-0625-1511_51_OCT2Former_100epoch__fold_None\val_result.csv
+
+val_step:    1
+
+vit_dims:    [64, 128, 256, 512]
+
+weight_decay:    0.0001
+

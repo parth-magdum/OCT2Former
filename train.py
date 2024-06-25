@@ -19,17 +19,20 @@ import time
 import torchsummary
 from torchvision.utils import save_image, make_grid
 # from DNN_printer import DNN_printer
-from model.OCT2Former import OCT2Former
+# from model.OCT2Former import OCT2Former
+from model.CSNet import CSNet
 import sys
 
 sys.setrecursionlimit(100000)
 
 def main(args, num_fold=0):
     torch.set_num_threads(1)
-    model = OCT2Former(in_chans=args.in_channel, num_classes=args.n_class,
-            embed_dims=args.vit_dims, k=args.token_dim,
-            num_heads=[2, 4, 4, 8, 16], mlp_ratios=[4, 4, 4, 4, 4], 
-            depths=args.depths, aux=args.aux, spec_inter=args.spec_interpolation)
+    # model = OCT2Former(in_chans=args.in_channel, num_classes=args.n_class,
+    #         embed_dims=args.vit_dims, k=args.token_dim,
+    #         num_heads=[2, 4, 4, 8, 16], mlp_ratios=[4, 4, 4, 4, 4], 
+    #         depths=args.depths, aux=args.aux, spec_inter=args.spec_interpolation)
+
+    model = CSNet(channels=2, classes=args.n_class)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
