@@ -71,6 +71,8 @@ def train(model, device, args, num_fold=0):
     cp_manager = utils.save_checkpoint_manager(5) 
     step = 0
 
+    torch.autograd.set_detect_anomaly(True)
+                                      
     for epoch in range(args.num_epochs):
         model.train()
         lr = utils.poly_learning_rate(args, opt, epoch) 
