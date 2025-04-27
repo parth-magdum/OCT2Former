@@ -24,7 +24,6 @@ class basic_setting():
     parser.add_argument("--vit_dims", type=list, default=[64, 128, 256, 512])
     parser.add_argument("--token_dim", type=list, default=[128, 128, 128])
     parser.add_argument("--run_dir", type=str, default="3M")
-    parser.add_argument("--plot_save_dir", type=str, default="plots")
     parser.add_argument("--val_step", type=int, default=1)
     parser.add_argument("--in_channel", type=int, default=1)
     parser.add_argument("--n_class", type=int, default=2)

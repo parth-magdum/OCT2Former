@@ -1,7 +1,5 @@
 from settings_args import *
 import torch.nn.functional as F
-import matplotlib.pyplot as plt
-import torchvision.transforms.functional as TF
 from torch.backends import cudnn
 from utils import utils
 from torch.utils.data import DataLoader
@@ -189,9 +187,6 @@ def val(model, dataloader, num_train_val,  device, args):
 
 
 
-import matplotlib.pyplot as plt
-import torchvision.transforms.functional as TF
-
 def test(model, device, args, num_fold=0):
     if os.path.exists(args.val_result_file):
         with open(args.val_result_file, "r") as f:
@@ -204,14 +199,17 @@ def test(model, device, args, num_fold=0):
     model.load_state_dict(torch.load(model_dir, map_location=device)["state_dict"])
     print(f'\rtest model loaded: [fold:{num_fold}] [best_epoch:{best_epoch}]')
 
-    os.makedirs(args.plot_save_dir, exist_ok=True)
-
-
     dataset_test = myDataset(args.data_root, args.target_root, args.crop_size, "test",
-                             k_fold=args.k_fold, imagefile_csv=args.dataset_file_list, num_fold=num_fold, data_root_aux=args.data_root_aux)
+                                k_fold=args.k_fold, imagefile_csv=args.dataset_file_list, num_fold=num_fold,data_root_aux=args.data_root_aux,)
     dataloader = DataLoader(dataset_test, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers, pin_memory=True)
 
-    all_dice, all_iou, all_acc, all_auc, all_sen, all_spe, all_bacc = [], [], [], [], [], [], []
+    all_dice = []
+    all_iou = []
+    all_acc = []
+    all_auc = []
+    all_sen = []
+    all_spe = []
+    all_bacc = []
     model.eval()
     with torch.no_grad():
         with tqdm(total=len(dataset_test), desc=f'TEST fold {num_fold}/{args.k_fold}', unit='img') as pbar:
@@ -219,7 +217,6 @@ def test(model, device, args, num_fold=0):
                 image = batch["image"]
                 label = batch["label"]
                 file = batch["file"]
-
                 assert len(image.size()) == 4
                 assert len(label.size()) == 3
                 image = image.to(device, dtype=torch.float32)
@@ -238,14 +235,14 @@ def test(model, device, args, num_fold=0):
 
                 pred = torch.exp(pred).max(dim=1)[1]
 
-                for b in range(image.size(0)):
-                    hist = utils.fast_hist(label[b, :, :], pred[b, :, :], args.n_class)
+                for b in range(image.size()[0]):
+                    hist = utils.fast_hist(label[b,:,:], pred[b,:,:], args.n_class)
                     dice, iou, acc, Sensitivity, Specificity, bacc = utils.cal_scores(hist.cpu().numpy(), smooth=0.01)
                     auc = utils.calc_auc(pred[b, :, :], label[b, :, :])
 
-                    test_result = [file[b], dice.mean()] + list(dice) + [iou.mean()] + list(iou) + [acc] + \
-                                  [Sensitivity.mean()] + list(Sensitivity) + [Specificity.mean()] + list(Specificity) + \
-                                  [bacc.mean()] + list(bacc)
+                    test_result = [file[b], dice.mean()]+list(dice)+[iou.mean()]+list(iou)+[acc] + \
+                        [Sensitivity.mean()]+list(Sensitivity)+[Specificity.mean()]+list(Specificity)+ \
+                        [bacc.mean()]+list(bacc)
                     with open(args.test_result_file, "a") as f:
                         w = csv.writer(f)
                         w.writerow(test_result)
@@ -257,41 +254,11 @@ def test(model, device, args, num_fold=0):
                     all_sen.append(list(Sensitivity))
                     all_spe.append(list(Specificity))
                     all_bacc.append(list(bacc))
-
                     if args.plot:
                         file_name, _ = os.path.splitext(file[b])
-                        save_image(pred[b, :, :].cpu().float().unsqueeze(0), os.path.join(args.plot_save_dir, file_name + f"_pred_{dice.mean():.2f}.png"), normalize=True)
+                        save_image(pred[b,:,:].cpu().float().unsqueeze(0), os.path.join(args.plot_save_dir, file_name + f"_pred_{dice.mean():.2f}.png"), normalize=True)
 
-                        # --- New: Side-by-side Visualization ---
-                        fig, axs = plt.subplots(1, 3, figsize=(15, 5))
-
-                        # Original image (assuming it has 1 or 3 channels)
-                        img_disp = image[b].cpu()
-                        if img_disp.shape[0] == 1:
-                            img_disp = img_disp.squeeze(0)
-                        else:
-                            img_disp = TF.to_pil_image(img_disp)
-                        axs[0].imshow(img_disp, cmap='gray' if img_disp.ndim == 2 else None)
-                        axs[0].set_title("Image")
-                        axs[0].axis('off')
-
-                        # Ground truth
-                        axs[1].imshow(label[b].cpu(), cmap='jet', interpolation='nearest', vmin=0, vmax=args.n_class-1)
-                        axs[1].set_title("Ground Truth")
-                        axs[1].axis('off')
-
-                        # Prediction
-                        axs[2].imshow(pred[b].cpu(), cmap='jet', interpolation='nearest', vmin=0, vmax=args.n_class-1)
-                        axs[2].set_title(f"Prediction (Dice={dice.mean():.2f})")
-                        axs[2].axis('off')
-
-                        plt.tight_layout()
-                        vis_save_path = os.path.join(args.plot_save_dir, file_name + f"_vis.png")
-                        plt.savefig(vis_save_path, bbox_inches='tight')
-                        plt.close(fig)
-                        # ----------------------------------------
-
-                pbar.update(image.size(0))
+                pbar.update(image.size()[0])
 
     print(f"\r---------Fold {num_fold} Test Result---------")
     print(f'mDice: {np.array(all_dice).mean()}')
@@ -307,7 +274,6 @@ def test(model, device, args, num_fold=0):
         return
 
     return all_dice, all_iou, all_acc, all_auc, all_sen, all_spe, all_bacc
-
 
 
 
