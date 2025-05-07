@@ -22,7 +22,7 @@ from torchvision.utils import save_image, make_grid
 
 from model.OCT2Former import OCT2Former
 from model.CSNet import CSNet
-from model.UNet3plus import UNet_3Plus_DeepSup_CGM
+from model.UNet3plus import UNet_3Plus
 from model.UNet import Unet
 import sys
 
@@ -38,7 +38,7 @@ def main(args, num_fold=0):
     # model = CSNet(channels=args.in_channel, classes=args.n_class)
     
     # model = Unet(in_channel=args.in_channel, n_class = args.n_class)
-    model = UNet_3Plus_DeepSup_CGM(in_channels=args.in_channel, n_classes = args.n_class)
+    model = UNet_3Plus(in_channels=args.in_channel, n_classes = args.n_class)
 
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
